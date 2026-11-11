@@ -25,3 +25,8 @@ Thumbs.db
 .vscode/
 *.log
 ~$*
+
+# Materiais de entrega ficam fora do repositório
+entrega/
+*.pdf
+*.docx

@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 
 from .banco import conectar, obter_parametros_conexao
 from .configuracao import ARQUIVO_AMBIENTE, PERFIS_BANCO, RAIZ_PROJETO
-from .evidencias import salvar_evidencia
 
 LOGGER = logging.getLogger(__name__)
 PASTA_BACKUPS = RAIZ_PROJETO / "backups"
@@ -81,7 +80,6 @@ def criar_backup():
                  "escopo": "schema public da aplicação; sem senhas e sem roles globais",
                  "sha256_arquivo": hashlib.sha256(arquivo.read_bytes()).hexdigest(), "tabelas": tabelas}
     arquivo.with_suffix(".manifest.json").write_text(json.dumps(manifesto, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    salvar_evidencia("backup", manifesto)
     LOGGER.info("Backup consistente criado: %s; tabelas=%s.", arquivo.name, list(tabelas))
     return arquivo.name
 
@@ -129,6 +127,6 @@ def restaurar_e_validar(nome_arquivo):
                  "banco_restaurado": banco, "resultado": "aprovado", "rls_ativo_tabelas": estrutura,
                  "tabelas_restauradas": restauradas, "hashes_identicos": True,
                  "dt_validacao": datetime.now(ZoneInfo("America/Sao_Paulo")).isoformat()}
-    salvar_evidencia("restauracao", evidencia)
+    arquivo.with_suffix(".restore.json").write_text(json.dumps(evidencia, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     LOGGER.info("Restauração aprovada; banco local=%s; hashes das quatro tabelas idênticos.", banco)
     return banco

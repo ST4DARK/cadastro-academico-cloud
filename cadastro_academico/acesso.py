@@ -9,7 +9,6 @@ from psycopg.errors import InsufficientPrivilege
 
 from .banco import conectar, obter_parametros_conexao
 from .configuracao import ARQUIVO_AMBIENTE, PERFIS_BANCO, RAIZ_PROJETO
-from .evidencias import salvar_evidencia
 
 def configurar_contas():
     """Aplica os privilégios e provisiona as contas e suas credenciais."""
@@ -63,5 +62,4 @@ def verificar_acessos():
                 raise RuntimeError(f"Permissões inesperadas no perfil {perfil}.")
             evidencias.append(resultado)
             print(f"Perfil {perfil}: leitura validada; alteração={resultado['atualizar_aluno']}; exclusão e DDL bloqueados.")
-    salvar_evidencia("controle_acesso", evidencias)
     return evidencias

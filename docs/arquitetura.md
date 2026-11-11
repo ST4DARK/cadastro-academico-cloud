@@ -58,6 +58,6 @@ O RLS está ativo nas quatro tabelas. A carga usa academico_ingestor, vinculada 
 
 O schema modela um vínculo por par aluno/curso. Rematrículas por semestre não fazem parte desta versão.
 
-## Backup e evidências
+## Backup e validação
 
-A DAG backup_academico_supabase exporta o schema public em snapshot consistente e restaura a cópia em um PostgreSQL Docker separado. O módulo backup.py confere os hashes e as contagens; evidencias.py consolida os resultados sanitizados em entrega/evidencias.json. O relatório é gerado a partir dessas evidências.
+A DAG backup_academico_supabase exporta o schema public em snapshot consistente e restaura a cópia em um PostgreSQL Docker separado. O módulo backup.py confere os hashes, as contagens e o RLS. O manifesto `.manifest.json` e o resultado `.restore.json` ficam junto ao arquivo `.dump` em `backups/`, fora do Git.

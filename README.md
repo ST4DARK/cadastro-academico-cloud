@@ -8,10 +8,9 @@ A pipeline busca 50 perfis brasileiros fictícios na Random User, valida os dado
 
 ```text
 cadastro_academico/  Código Python da pipeline e da conexão
-dags/              DAG do Airflow
+dags/              DAGs de ingestão e backup do Airflow
 supabase/          Estrutura SQL de referência
-docs/              Arquitetura, operação e gerador do relatório
-entrega/           Relatório Word/PDF e evidências reais
+docs/              Arquitetura, operação, segurança e backup
 compose.yaml       Ambiente local do Airflow
 Dockerfile         Imagem com as dependências da pipeline
 requirements.txt   Dependências Python instaladas na imagem
@@ -56,18 +55,12 @@ O banco conectado já está criado. `supabase/schema.sql` serve para instalaçã
 
 Consulte [a arquitetura](docs/arquitetura.md) para entender os módulos, DataFrames, transações e a identificação dos perfis.
 
-## Entregas da atividade
+## Segurança e backup
 
-- [Relatório PDF](entrega/relatorio.pdf) e [Word editável](entrega/relatorio.docx), com capturas reais do Airflow.
-- [Evidências de permissões, DAGs, backup e restauração](entrega/evidencias.json).
-- [Controle de acesso, backup e roteiro de apresentação](docs/seguranca_backup.md).
+Consulte [controle de acesso e backup](docs/seguranca_backup.md) para provisionar as contas de leitor, operador e pipeline. As senhas ficam apenas no `.env`.
 
-Foram validados três perfis PostgreSQL e a ingestão com uma conta restrita. O backup foi restaurado em um PostgreSQL local separado, com contagens e hashes idênticos nas quatro tabelas. A DAG backup_academico_supabase permite repetir a prova de recuperação.
-
-As senhas dos perfis e do banco de restauração são geradas no provisionamento e ficam apenas no .env. Consulte docs/seguranca_backup.md antes de configurar outro ambiente. A entrada da pipeline é o Airflow; o provisionamento é uma operação administrativa local.
-
-Antes de entregar, complete professor, turma/unidade e demais integrantes na capa. O código e os entregáveis são versionados neste repositório; as DAGs usam acionamento manual.
+A DAG `backup_academico_supabase` cria uma cópia consistente e testa a restauração em um PostgreSQL local separado. Os arquivos `.dump`, `.manifest.json` e `.restore.json` ficam em `backups/`, fora do Git. A validação confere contagens, hashes dos registros e RLS nas quatro tabelas.
 
 ## Arquivos locais
 
-`.env`, `.venv`, caches e backups ficam fora do Git. As credenciais não entram na imagem Docker. Use apenas dados fictícios; não registre senhas no código nem no histórico das cargas.
+`.env`, `.venv`, caches, backups e materiais de entrega ficam fora do Git. As credenciais não entram na imagem Docker. Use apenas dados fictícios; não registre senhas no código nem no histórico das cargas.

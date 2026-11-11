@@ -22,7 +22,6 @@ services:
       - ./.env:/opt/projeto/.env:ro
       - ./supabase:/opt/projeto/supabase:ro
       - ./backups:/opt/projeto/backups
-      - ./entrega:/opt/projeto/entrega
     healthcheck:
       test:
         - CMD

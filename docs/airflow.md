@@ -1,6 +1,6 @@
 # Operação do Airflow
 
-Ambiente local de desenvolvimento e apresentação: Airflow 3.4.0 standalone em Docker, com metadados SQLite em volume persistente. O Supabase permanece separado desse banco de metadados.
+Ambiente local de desenvolvimento: Airflow 3.4.0 standalone em Docker, com metadados SQLite em volume persistente. O Supabase permanece separado desse banco de metadados.
 
 ## Iniciar
 

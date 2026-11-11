@@ -1,0 +1,27 @@
+# Credenciais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Ambiente Python e caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# Backups
+backups/
+*.dump
+*.backup
+
+# Arquivos temporários do Supabase
+supabase/.temp/
+supabase/.branches/
+
+# Sistema
+Thumbs.db
+.DS_Store
+.vscode/
+*.log
+~$*

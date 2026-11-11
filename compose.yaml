@@ -1,0 +1,54 @@
+name: cadastro-academico
+
+services:
+  airflow:
+    build: .
+    image: cadastro-academico-airflow:3.4.0
+    command: standalone
+    init: true
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__CORE__PARALLELISM: '2'
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: 'admin:admin'
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      PYTHONPATH: /opt/projeto
+    ports:
+      - '127.0.0.1:8080:8080'
+    volumes:
+      - airflow-data:/opt/airflow
+      - ./dags:/opt/airflow/dags:ro
+      - ./cadastro_academico:/opt/projeto/cadastro_academico:ro
+      - ./.env:/opt/projeto/.env:ro
+      - ./supabase:/opt/projeto/supabase:ro
+      - ./backups:/opt/projeto/backups
+      - ./entrega:/opt/projeto/entrega
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/v2/monitor/health', timeout=5)"
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 5
+
+  postgres-restauracao:
+    image: postgres:17
+    profiles: ["validacao"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${RESTORE_DB_PASSWORD:-}
+    volumes:
+      - restauracao-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  airflow-data:
+  restauracao-data:

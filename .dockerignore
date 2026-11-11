@@ -1,0 +1,5 @@
+# Somente as dependências entram no contexto de build.
+# Código, DAGs e .env são montados em tempo de execução.
+**
+!Dockerfile
+!requirements.txt
